@@ -4,7 +4,7 @@ Short Guide for Modern HTTP Caching
 
 ## Cache-Control
 
-Controls how to cache response
+Controls how responses should be cached.
 
 ### Directives
 
@@ -20,8 +20,8 @@ Cache-Control: no-store
 
 Revalidate cache before use (see [Cache Revalidation](#cache-revalidation) for more info).
 
-Browser will send request to validate is cached data can be use.
-This can reduce bandwidth but still use a roundtrip to validate cache response.
+Browser will send a request to validate if the cached data can be used.
+This can reduce bandwidth but still requires a roundtrip to validate the cached response.
 
 ```text
 Cache-Control: no-cache
@@ -29,11 +29,19 @@ Cache-Control: no-cache
 
 #### max-age
 
-Set the maximum amount of time (in seconds) that resource will be cached.
+Set the maximum amount of time (in seconds) that the resource will be cached.
 
-Browser will use cached response without send request (from disk cache).
+Browser will use cached response without sending any request (from disk cache).
 
-> Note: max-age can explicit set public directive.
+```text
+Cache-Control: max-age=3600
+```
+
+#### public
+
+Response can be cached in shared cache (Reverse Proxy, CDN, etc.)
+
+> Note: most of the time, you don’t need to use `public` as it can be inferred by other caching directives, such as `max-age`.
 
 ```text
 Cache-Control: max-age=3600
@@ -45,26 +53,28 @@ equals to
 Cache-Control: public, max-age=3600
 ```
 
-#### public
-
-Response can be cached in shared cache (Reverse Proxy, CDN, etc.)
-
-Normally just set max-age.
-
 #### private
 
-Response CAN NOT be cached in shared cache.
+Response is intended for one user CAN NOT be cached in shared cache.
 
 ```text
 Cache-Control: private, max-age=3600
 ```
 
-### Cache-Control Summary
+#### immutable
 
-#### Static Files with unique file name (ex. with hash in file name)
+Prevents cache revalidation when clicking Refresh button (which normally causes revalidation on all resources).
 
 ```text
-Cache-Control: max-age=31536000
+Cache-Control: max-age=31536000, immutable
+```
+
+### Cache-Control Summary
+
+#### Static files with unique file name (ex. with hash in file name)
+
+```text
+Cache-Control: max-age=31536000, immutable
 ```
 
 #### MPA (generate HTML)
@@ -87,16 +97,16 @@ Cache-Control: no-cache
 
 ## Cache Revalidation
 
-> Last-Modified and ETag can be use for conditional requests, but not include in this article.
+> Last-Modified and ETag can be used for conditional requests, but not included in this article.
 
-When `Cache-Control` set to `no-cache`,
+When `no-cache` directive is used,
 at least one of these headers must be set to trigger cache revalidation.
 
 ### Last-Modified
 
-Time that resource last modified.
+Time that the resource has been last modified.
 
-Normally use for static file, file server.
+Normally used for static files.
 
 ```text
 Last-Modified: <day-name>, <day> <month> <year> <hour>:<minute>:<second> GMT
@@ -108,13 +118,13 @@ ex.
 Last-Modified: Tue, 18 Sep 2018 11:12:03 GMT
 ```
 
-If browser has cached response, browser will send request to validate cache with
+If browser has cached the response, it will send a request to validate cache with
 
 ```text
 If-Modified-Since: Tue, 18 Sep 2018 11:12:03 GMT
 ```
 
-If server has newer file, then send new file and new `Last-Modified`
+If the server has a newer file, then it sends the new file contents and new `Last-Modified` header
 
 ```text
 HTTP/1.1 200 OK
@@ -126,7 +136,7 @@ Last-Modified: Tue, 18 Sep 2018 20:00:00 GMT
 Content
 ```
 
-If file does not modify, then return 304 status code without body.
+If file has not been modified since, then it returns 304 status code without body.
 
 ```text
 HTTP/1.1 304 Not Modified
@@ -136,13 +146,13 @@ Date: Tue, 18 Sep 2018 22:00:00 GMT
 
 ### ETag
 
-Like `Last-Modified` but ETag have more accurate.
+Like `Last-Modified` but `ETag` has more accuracy.
 
-Use when server does not know resource's last modified or resource change more than one time in a second.
+Used when server does not know resource's last modified date or when a resource could change more than once in a second.
 
-ETag is like fingerprint of resource, and must generate new value when resource value changed.
+ETag is like a fingerprint of resource, and a server must generate a new ETag when the resource’s contents changed.
 
-ETag can be generated using hash of response body or uuid or anything that unique when resource changed.
+ETag can be generated using hash of response body, UUID, or anything that results in a unique string when resource contents changed.
 
 Browser will send `If-None-Match` to server to validate cache.
 
@@ -150,7 +160,7 @@ ETag has `Weak` and `Strong` validator.
 
 #### Weak
 
-Weak ETag use to validate only **body** of response, when response body changed, ETag value will change.
+A weak ETag is used to validate only **body** of response, when response body changed, ETag value will change.
 
 ```text
 ETag: W/"value"
@@ -164,9 +174,9 @@ ETag: W/"abcde"
 
 #### Strong
 
-Strong ETag validate **both** response **body** and **headers**.
+A strong ETag is used to validate **both** response **body** and **headers**.
 
-Even if body does not change but header change, Strong ETag must change to new value.
+Even if body is not changed but header is changed, a strong ETag must be changed to a new value.
 
 Use-cases: To cache byte-range response.
 
