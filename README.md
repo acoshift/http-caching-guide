@@ -87,6 +87,8 @@ Cache-Control: no-cache
 
 ## Cache Revalidation
 
+> Last-Modified and ETag can be use for conditional requests, but not include in this article.
+
 When `Cache-Control` set to `no-cache`,
 at least one of these headers must be set to trigger cache revalidation.
 
@@ -133,8 +135,6 @@ Date: Tue, 18 Sep 2018 22:00:00 GMT
 ```
 
 ### ETag
-
-> ETag can be use for conditional requests, but not include in this article.
 
 Like `Last-Modified` but ETag have more accurate.
 
