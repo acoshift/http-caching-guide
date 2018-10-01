@@ -121,7 +121,7 @@ HTTP/1.1 200 OK
 Date: Tue, 18 Sep 2018 22:00:00 GMT
 Content-Type: text/html; charset=utf-8
 Content-Length: 7
-If-Modified-Since: Tue, 18 Sep 2018 20:00:00 GMT
+Last-Modified: Tue, 18 Sep 2018 20:00:00 GMT
 
 Content
 ```
