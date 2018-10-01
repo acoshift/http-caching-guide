@@ -20,7 +20,7 @@ Cache-Control: no-store
 
 Revalidate cache before use (see [Cache Revalidation](#cache-revalidation) for more info).
 
-Client must send request to validate is cached data can be use.
+Browser will send request to validate is cached data can be use.
 This can reduce bandwidth but still use a roundtrip to validate cache response.
 
 ```text
@@ -31,7 +31,7 @@ Cache-Control: no-cache
 
 Set the maximum amount of time (in seconds) that resource will be cached.
 
-Client will use cached response without send request.
+Browser will use cached response without send request (from disk cache).
 
 > Note: max-age can explicit set public directive.
 
