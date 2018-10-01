@@ -138,11 +138,11 @@ Date: Tue, 18 Sep 2018 22:00:00 GMT
 
 Like `Last-Modified` but ETag have more accurate.
 
-Use when server do not know resource last modified or resource change many time more than one in a second.
+Use when server does not know resource's last modified or resource change more than one time in a second.
 
 ETag is like fingerprint of resource, and must generate new value when resource value changed.
 
-ETag can generate using hash of response body or uuid or anything that unique when resource changed.
+ETag can be generated using hash of response body or uuid or anything that unique when resource changed.
 
 Browser will send `If-None-Match` to server to validate cache.
 
