@@ -134,7 +134,7 @@ Date: Tue, 18 Sep 2018 22:00:00 GMT
 
 ### ETag
 
-> ETag can be use for condition update resource, but not include in the article.
+> ETag can be use for conditional requests, but not include in this article.
 
 Like `Last-Modified` but ETag have more accurate.
 
