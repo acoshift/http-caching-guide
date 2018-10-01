@@ -59,6 +59,20 @@ Response CAN NOT be cached in shared cache.
 Cache-Control: private, max-age=3600
 ```
 
+### Summary
+
+#### Static Files
+
+```text
+Cache-Control: max-age=31536000
+```
+
+#### Web Pages
+
+```text
+Cache-Control: no-cache
+```
+
 ## Cache Revalidation
 
 > TODO
