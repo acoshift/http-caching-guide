@@ -83,6 +83,12 @@ Cache-Control: max-age=31536000, immutable
 Cache-Control: no-store
 ```
 
+Why not `no-cache` ?
+
+Because MPA server usually send `Set-Cookie` to rolling cookie expiration time,
+and `304 Not Modified` should not send other header than cache information.
+[RFC 7372 - Section 4.1](https://tools.ietf.org/html/rfc7232#section-4.1)
+
 #### Web Pages (static HTML)
 
 ```text
@@ -205,3 +211,14 @@ ETag: "abc2" # for br
 #### ETag Summary
 
 Use **Strong** ETag unless you know what you're doing 😁
+
+Ex. you don't care about
+
+- `Content-Encoding`
+- `Content-Language`
+- `Range`
+- `Set-Cookie`
+- `Vary`
+- etc.
+
+then you can use **Weak** ETag
