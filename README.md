@@ -41,7 +41,7 @@ Cache-Control: max-age=3600
 
 Response can be cached in shared cache (Reverse Proxy, CDN, etc.)
 
-> Note: most of the time, you don’t need to use `public` as it can be inferred by other caching directives, such as `max-age`.
+> Note: most of the time, you don’t need to use `public` as it can be inferred by other caching directives, such as `max-age`. But check with CDN document first.
 
 ```text
 Cache-Control: max-age=3600
@@ -74,7 +74,7 @@ Cache-Control: max-age=31536000, immutable
 #### Static files with unique file name (ex. with hash in file name)
 
 ```text
-Cache-Control: max-age=31536000, immutable
+Cache-Control: public, max-age=31536000, immutable
 ```
 
 #### MPA (generate HTML)
